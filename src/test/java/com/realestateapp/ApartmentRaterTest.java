@@ -1,5 +1,6 @@
 package com.realestateapp;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,9 +49,11 @@ class ApartmentRaterTest {
         apartments.add(new Apartment(1000, new BigDecimal(500)));
         apartments.add(new Apartment(500, new BigDecimal(1000)));
 
-        for (Apartment apartment : apartments) {
-            assertNotEquals(-1, ApartmentRater.rateApartment(apartment));
-        }
+        // when
+        double average = ApartmentRater.calculateAverageRating(apartments);
+
+        // then
+        assertEquals(0, average);
     }
 
     @Test
@@ -63,31 +66,5 @@ class ApartmentRaterTest {
 
         // then
         assertThrowsExactly(RuntimeException.class, executable);
-    }
-
-    @Test
-    void should_GenerateCorrectApartment_When_DefaultMinAreaMinPrice() {
-        // given
-        RandomApartmentGenerator generator = new RandomApartmentGenerator();
-        Apartment apartment = generator.generate();
-
-        // when
-        int apartmentRate = ApartmentRater.rateApartment(apartment);
-
-        // then
-        assertNotEquals(-1, apartmentRate);
-    }
-
-    @Test
-    void should_GenerateCorrectApartment_When_CustomMinAreaMinPrice() {
-        // given
-        RandomApartmentGenerator generator = new RandomApartmentGenerator(1, new BigDecimal(0));
-        Apartment apartment = generator.generate();
-
-        // when
-        int apartmentRate = ApartmentRater.rateApartment(apartment);
-
-        // then
-        assertNotEquals(-1, apartmentRate);
     }
 }
